@@ -19,7 +19,7 @@ function submitIssue(e) {
   document.getElementById('issueInputForm').reset();
   fetchIssues();
   e.preventDefault();
-  countValue()
+  countId(id);
 }
 
 const closeIssue = id => {
@@ -36,7 +36,7 @@ const closeIssue = id => {
 
 const deleteIssue = id => {
   const issues = JSON.parse(localStorage.getItem('issues'));
-  const remainingIssues = issues.filter( issue.id !== id )
+  const remainingIssues = issues.filter( issues.id !== id )
   localStorage.setItem('issues', JSON.stringify(remainingIssues));
 }
 
@@ -82,13 +82,3 @@ function deleteIssueBtn(issueId){
   
 }
 
-function countValue(){
-  let openIssue =  document.getElementById('total_open_issue').innerText;
-  let openIssueNumber = Number(openIssue);
-  let countNumber = openIssueNumber + 1 ;
-  
-  document.getElementById('total_open_issue').innerText = countNumber;
-  
-
-
-}
