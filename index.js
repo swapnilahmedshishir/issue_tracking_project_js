@@ -19,6 +19,7 @@ function submitIssue(e) {
   document.getElementById('issueInputForm').reset();
   fetchIssues();
   e.preventDefault();
+  countValue()
 }
 
 const closeIssue = id => {
@@ -27,7 +28,11 @@ const closeIssue = id => {
   currentIssue.status = 'Closed';
   localStorage.setItem('issues', JSON.stringify(issues));
   fetchIssues();
+  
 }
+
+
+
 
 const deleteIssue = id => {
   const issues = JSON.parse(localStorage.getItem('issues'));
@@ -43,14 +48,47 @@ const fetchIssues = () => {
   for (var i = 0; i < issues.length; i++) {
     const {id, description, severity, assignedTo, status} = issues[i];
 
-    issuesList.innerHTML +=   `<div class="well">
+    issuesList.innerHTML +=   `<div id="${id}well" class="well">
                               <h6>Issue ID: ${id} </h6>
-                              <p><span class="label label-info"> ${status} </span></p>
-                              <h3> ${description} </h3>
+                              <p><span id="${id}Status" class="label label-info"> ${status} </span></p>
+                              <h3 id="${id}issueText"> ${description} </h3>
                               <p><span class="glyphicon glyphicon-time"></span> ${severity}</p>
                               <p><span class="glyphicon glyphicon-user"></span> ${assignedTo}</p>
-                              <a href="#" onclick="setStatusClosed(${id})" class="btn btn-warning">Close</a>
-                              <a href="#" onclick="deleteIssue(${id})" class="btn btn-danger">Delete</a>
+                              <a href="#" onclick="setStatusClosed(${id})" class="btn btn-warning btn_close">Close</a>
+                              
+                              <a href="#" onclick="deleteIssueBtn(${id})" class="btn btn-danger">Delete</a>
                               </div>`;
   }
+}
+
+function setStatusClosed(issuId){
+ const descriptionText = document.getElementById(issuId +'issueText');
+ descriptionText.style.textDecoration ='line-through';
+
+ const statusText = document.getElementById(issuId +'Status');
+ statusText.innerHTML = 'close';
+ statusText.style.backgroundColor='tomato';
+
+}
+
+function deleteIssueBtn(issueId){
+  const issuesList = document.getElementById(issueId+'well');
+  let userAnswer = confirm("Do you want to Delete issue ?");
+  if(userAnswer == true){
+    issuesList.style.display = 'none';
+  }else if (userAnswer == false ){
+    issuesList.style.display = 'block';
+  }
+  
+}
+
+function countValue(){
+  let openIssue =  document.getElementById('total_open_issue').innerText;
+  let openIssueNumber = Number(openIssue);
+  let countNumber = openIssueNumber + 1 ;
+  
+  document.getElementById('total_open_issue').innerText = countNumber;
+  
+
+
 }
